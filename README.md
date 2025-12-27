@@ -1,15 +1,19 @@
 # Posting Map (ポスティング管理マップ)
+<img src="docs/images/icon.png" align="right" width="100" alt="Posting Map Icon">
+
 
 ポスティング（チラシ配布）活動支援アプリです。
 地図上で配布エリアを管理し、配布状況（予定・完了・中止）を可視化します。
+
+<video src="docs/images/posting-map.mp4" controls width="100%"></video>
 
 ## 主な機能
 - **現在地表示**: アプリ起動時に現在地周辺の地図を自動表示し、すぐに活動を開始できます。
 - **エリア作図**: 地図上に配布するエリア（多角形）を指でなぞって描画できます。
 - **ステータス管理**: 各エリアを色で直感的に管理。
-  - 🔵 **予定** (Planned): これから配るエリア
-  - 🟢 **完了** (Completed): 配り終わったエリア
-  - 🔘 **中止** (Cancelled): 配布できなかったエリア
+  - 🔵 **予定** (Planned): <br><img src="docs/images/yotei.png" width="200" alt="Planned">
+  - 🟢 **完了** (Completed): <br><img src="docs/images/kanryo.png" width="200" alt="Completed">
+  - 🔘 **中止** (Cancelled): <br><img src="docs/images/chuushi.png" width="200" alt="Cancelled">
 - **メモ機能**: 「チラシお断りの家あり」などの注意事項を記録できます。
 - **PWA対応**: スマートフォンのホーム画面に追加することで、ネイティブアプリのように全画面で動作します。
 
