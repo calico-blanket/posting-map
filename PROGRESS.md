@@ -1,7 +1,7 @@
 # プロジェクト経過報告: ポスティング管理マップ
 
 ## プロジェクト概要
-「チームみらい」様のポスティング（チラシ配布）活動を支援するための地図アプリ開発。
+ポスティング（チラシ配布）活動を支援するための地図アプリ開発。
 **技術スタック:** Next.js 16 (App Router), Firebase (Auth, Firestore), Leaflet (React-Leaflet), Tailwind CSS, Vercel.
 
 ## 開発ロードマップとマイルストーン
