@@ -5,7 +5,10 @@
 ポスティング（チラシ配布）活動支援アプリです。
 地図上で配布エリアを管理し、配布状況（予定・完了・中止）を可視化します。
 
-<video src="docs/images/posting-map.mp4" controls width="100%"></video>
+
+### デモ動画
+[![Demo Video](docs/images/yotei.png)](docs/images/posting-map.mp4)
+*画像をタップすると動画が再生されます*
 
 ## 主な機能
 - **現在地表示**: アプリ起動時に現在地周辺の地図を自動表示し、すぐに活動を開始できます。
