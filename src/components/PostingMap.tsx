@@ -17,7 +17,7 @@ const INITIAL_CENTER: [number, number] = [34.79, 135.35];
 const INITIAL_ZOOM = 12;
 
 const STATUS_COLORS: Record<PostingStatus, string> = {
-    planned: "#3b82f6", // blue-500
+    planned: "#14b8a6", // teal-500
     completed: "#22c55e", // green-500
     cancelled: "#6b7280", // gray-500
 };
@@ -42,7 +42,7 @@ function UserLocation() {
         html: `<div style="
             width: 16px; 
             height: 16px; 
-            background: #3b82f6; 
+            background: #14b8a6; 
             border: 2px solid white; 
             border-radius: 50%; 
             box-shadow: 0 0 4px rgba(0,0,0,0.3);
@@ -52,7 +52,7 @@ function UserLocation() {
                 position: absolute;
                 inset: -4px;
                 border-radius: 50%;
-                background: #3b82f6;
+                background: #14b8a6;
                 opacity: 0.4;
                 animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
             "></div>
@@ -95,7 +95,7 @@ function MapControls() {
                 className="bg-white p-2 rounded shadow-md border hover:bg-gray-100 flex items-center gap-2 text-sm font-bold text-gray-700"
                 type="button"
             >
-                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <MapPin className="w-4 h-4 text-blue-600" />}
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <MapPin className="w-4 h-4 text-teal-600" />}
                 Currently
             </button>
         </div>

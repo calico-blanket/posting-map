@@ -66,7 +66,7 @@ export default function AreaEditForm({ area, onSave, onDelete }: AreaEditFormPro
                         type="button"
                         onClick={(e) => { e.stopPropagation(); setStatus("planned"); }}
                         className={`flex-1 py-1 px-2 text-xs rounded border ${status === "planned"
-                            ? "bg-blue-500 text-white border-blue-600"
+                            ? "bg-teal-500 text-white border-teal-600"
                             : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
                             }`}
                     >
@@ -101,7 +101,7 @@ export default function AreaEditForm({ area, onSave, onDelete }: AreaEditFormPro
                     value={memo}
                     onChange={(e) => setMemo(e.target.value)}
                     onClick={(e) => e.stopPropagation()}
-                    className="w-full text-sm border border-gray-300 rounded p-1.5 focus:ring-1 focus:ring-blue-500 outline-none"
+                    className="w-full text-sm border border-gray-300 rounded p-1.5 focus:ring-1 focus:ring-teal-500 outline-none"
                     rows={3}
                     placeholder="注意事項など"
                 />
@@ -121,7 +121,7 @@ export default function AreaEditForm({ area, onSave, onDelete }: AreaEditFormPro
                 <button
                     type="submit"
                     disabled={isSaving}
-                    className="px-3 py-1.5 bg-blue-600 text-white text-xs font-bold rounded hover:bg-blue-700 disabled:opacity-50"
+                    className="px-3 py-1.5 bg-teal-600 text-white text-xs font-bold rounded hover:bg-teal-700 disabled:opacity-50"
                 >
                     {isSaving ? "保存中..." : "保存"}
                 </button>
