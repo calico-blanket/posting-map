@@ -102,6 +102,20 @@ function MapControls() {
     );
 }
 
+function AutoCenter() {
+    const map = useMap();
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                map.setView([pos.coords.latitude, pos.coords.longitude], 16);
+            },
+            (err) => console.warn(err),
+            { enableHighAccuracy: true }
+        );
+    }, [map]);
+    return null;
+}
+
 export default function PostingMap() {
     const { user } = useAuth();
     const [areas, setAreas] = useState<PostingArea[]>([]);
@@ -202,6 +216,7 @@ export default function PostingMap() {
 
             <MapControls />
             <UserLocation />
+            <AutoCenter />
 
             {areas.map(area => (
                 <Polygon
