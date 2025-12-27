@@ -28,3 +28,7 @@
 1. Googleアカウントでログインします。
 2. 画面左上の「多角形アイコン」をタップして、地図上に配るエリアを描きます。
 3. エリアをタップして「完了」などのステータスを変更し、「保存」します。
+
+## ライセンス
+このプロジェクトは [MIT License](./LICENSE) のもとで公開されています。
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
