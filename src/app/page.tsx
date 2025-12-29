@@ -3,8 +3,9 @@ import { useAuth } from "@/components/AuthProvider";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { Loader2 } from "lucide-react";
+import { Loader2, Settings } from "lucide-react";
 import { signIn } from "@/lib/auth";
+import BackupModal from "@/components/BackupModal";
 
 const PostingMap = dynamic(() => import("@/components/PostingMap"), {
   ssr: false,
@@ -13,6 +14,7 @@ const PostingMap = dynamic(() => import("@/components/PostingMap"), {
 
 export default function PostingPage() {
   const { user, loading } = useAuth();
+  const [isBackupModalOpen, setIsBackupModalOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -49,10 +51,23 @@ export default function PostingPage() {
 
   return (
     <div className="h-screen w-full relative">
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[1000] bg-white/90 px-4 py-2 rounded-full shadow-md backdrop-blur-sm border border-gray-200">
-        <h1 className="font-bold text-gray-800 text-sm md:text-base">ポスティング管理マップ (共有)</h1>
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-2">
+        <div className="bg-white/90 px-4 py-2 rounded-full shadow-md backdrop-blur-sm border border-gray-200">
+          <h1 className="font-bold text-gray-800 text-sm md:text-base">ポスティング管理マップ (共有)</h1>
+        </div>
+        <button
+          onClick={() => setIsBackupModalOpen(true)}
+          className="bg-white/90 p-2 rounded-full shadow-md backdrop-blur-sm border border-gray-200 hover:bg-gray-100 transition-colors text-gray-700"
+          title="設定・バックアップ"
+        >
+          <Settings size={20} />
+        </button>
       </div>
       <PostingMap />
+      <BackupModal
+        isOpen={isBackupModalOpen}
+        onClose={() => setIsBackupModalOpen(false)}
+      />
     </div>
   );
 }
