@@ -13,6 +13,7 @@
   - 🔵 **予定** (Planned): <br><img src="docs/images/yotei.png" width="200" alt="Planned">
   - 🟢 **完了** (Completed): <br><img src="docs/images/kanryo.png" width="200" alt="Completed">
   - 🔘 **中止** (Cancelled): <br><img src="docs/images/chuushi.png" width="200" alt="Cancelled">
+- **ゲスト利用**: Googleアカウントを持っていないユーザーも「ゲスト」として参加・編集が可能です。
 - **メモ機能**: 「チラシお断りの家あり」などの注意事項を記録できます。
 - **データ管理**: 設定画面からいつでも全データをJSONファイルとしてバックアップ（ダウンロード）および復元（インポート）できます。
 - **PWA対応**: スマートフォンのホーム画面に追加することで、ネイティブアプリのように全画面で動作します。
