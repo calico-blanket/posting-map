@@ -1,4 +1,4 @@
-import { signInWithPopup, signOut as firebaseSignOut, User } from "firebase/auth";
+import { signInWithPopup, signInAnonymously, signOut as firebaseSignOut, User } from "firebase/auth";
 import { auth, provider } from "./firebase";
 
 // Allow-list from environment variable
@@ -17,6 +17,16 @@ export const signIn = async (): Promise<User> => {
         return user;
     } catch (error) {
         console.error("Login failed", error);
+        throw error;
+    }
+};
+
+export const signInGuest = async (): Promise<User> => {
+    try {
+        const result = await signInAnonymously(auth);
+        return result.user;
+    } catch (error) {
+        console.error("Guest login failed", error);
         throw error;
     }
 };
