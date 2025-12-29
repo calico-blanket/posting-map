@@ -24,10 +24,7 @@ export default function BackupModal({ isOpen, onClose }: BackupModalProps) {
             setIsExporting(true);
 
             const snapshot = await getDocs(getPostingAreasCollection());
-            const areas = snapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data()
-            }));
+            const areas = snapshot.docs.map(doc => doc.data());
 
             const dataStr = JSON.stringify(areas, null, 2);
             const dataBlob = new Blob([dataStr], { type: "application/json" });
