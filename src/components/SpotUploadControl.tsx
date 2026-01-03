@@ -21,38 +21,18 @@ export default function SpotUploadControl({ onCapture }: SpotUploadControlProps)
 
         try {
             // 1. Extract Location (EXIF)
-            const getExifLocation = (file: File): Promise<{ lat: number; lng: number } | null> => {
-                return new Promise((resolve) => {
-                    // @ts-ignore
-                    exifr.getData(file, function (this: any) {
-                        const latData = exifr.getTag(this, "GPSLatitude");
-                        const latRef = exifr.getTag(this, "GPSLatitudeRef");
-                        const lngData = exifr.getTag(this, "GPSLongitude");
-                        const lngRef = exifr.getTag(this, "GPSLongitudeRef");
-
-                        if (latData && latRef && lngData && lngRef) {
-                            const convertDMSToDD = (dms: number[], ref: string) => {
-                                if (!Array.isArray(dms) || dms.length < 3) return NaN;
-                                let dd = dms[0] + dms[1] / 60 + dms[2] / 3600;
-                                if (ref === "S" || ref === "W") {
-                                    dd = dd * -1;
-                                }
-                                return dd;
-                            };
-
-                            const lat = convertDMSToDD(latData, latRef);
-                            const lng = convertDMSToDD(lngData, lngRef);
-
-                            if (!isNaN(lat) && !isNaN(lng)) {
-                                resolve({ lat, lng });
-                            } else {
-                                resolve(null);
-                            }
-                        } else {
-                            resolve(null);
-                        }
-                    });
-                });
+            const getExifLocation = async (file: File): Promise<{ lat: number; lng: number } | null> => {
+                try {
+                    const gps = await exifr.gps(file);
+                    if (gps && typeof gps.latitude === 'number' && typeof gps.longitude === 'number') {
+                        console.log("EXIF GPS found:", gps);
+                        return { lat: gps.latitude, lng: gps.longitude };
+                    }
+                    return null;
+                } catch (e) {
+                    console.warn("EXIF parsing error:", e);
+                    return null;
+                }
             };
 
             let location = await getExifLocation(file);
