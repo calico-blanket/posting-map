@@ -57,6 +57,8 @@ export default function SpotUploadControl({ onCapture }: SpotUploadControlProps)
             }
 
             if (location) {
+                console.log("Final location before onCapture:", location);
+                alert(`🎯 最終座標: ${location.lat.toFixed(4)}, ${location.lng.toFixed(4)}`);
                 onCapture(file, location);
             }
 
