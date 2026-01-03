@@ -3,14 +3,19 @@ import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Polygon, Popup, useMap, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { PostingArea, PostingStatus } from "@/lib/types";
+import { Spot } from "@/types/spot";
 import LeafletDrawControl from "./LeafletDrawControl";
 import AreaEditForm from "./AreaEditForm";
+import SpotUploadControl from "./SpotUploadControl";
+import SpotMarker from "./SpotMarker";
 import { useAuth } from "./AuthProvider";
 import { getPostingAreasCollection } from "@/lib/firestore";
-import { addDoc, deleteDoc, doc, onSnapshot, serverTimestamp, updateDoc } from "firebase/firestore";
+import { addDoc, deleteDoc, doc, onSnapshot, serverTimestamp, updateDoc, collection, writeBatch } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import L from "leaflet";
 import { Loader2, MapPin } from "lucide-react";
+import SpotFormModal from "./SpotFormModal";
+import { compressImage, blobToBase64, createThumbnail } from "@/lib/image-utils";
 
 // Initial View: Takarazuka/Kobe
 const INITIAL_CENTER: [number, number] = [34.79, 135.35];
@@ -118,20 +123,35 @@ function AutoCenter() {
 
 export default function PostingMap() {
     const { user } = useAuth();
+    const [spots, setSpots] = useState<Spot[]>([]);
     const [areas, setAreas] = useState<PostingArea[]>([]);
 
+    // Modal State
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMode, setModalMode] = useState<"create" | "edit">("create");
+    const [pendingFile, setPendingFile] = useState<File | null>(null);
+    const [pendingLocation, setPendingLocation] = useState<{ lat: number; lng: number } | null>(null);
+    const [editingSpot, setEditingSpot] = useState<Spot | null>(null);
+
     useEffect(() => {
-        const unsubscribe = onSnapshot(getPostingAreasCollection(), (snapshot) => {
+        // Areas listener
+        const unsubscribeAreas = onSnapshot(getPostingAreasCollection(), (snapshot) => {
             const data = snapshot.docs.map(d => d.data());
-            console.log("Fetched Areas:", data); // Debug log
             setAreas(data);
         }, (error) => {
             console.error("Firestore Error:", error);
-            if (error.code === 'permission-denied') {
-                alert("データベースへのアクセスが拒否されました。\nFirebase ConsoleでFirestoreのルールを確認してください。");
-            }
         });
-        return () => unsubscribe();
+
+        // Spots listener
+        const unsubscribeSpots = onSnapshot(collection(db, "spots"), (snapshot) => {
+            const data = snapshot.docs.map(d => ({ id: d.id, ...d.data() } as Spot));
+            setSpots(data);
+        });
+
+        return () => {
+            unsubscribeAreas();
+            unsubscribeSpots();
+        };
     }, []);
 
     const handleCreated = async (layer: any) => {
@@ -197,6 +217,129 @@ export default function PostingMap() {
         }
     };
 
+    // Spot Management Handlers
+    const handleSpotCapture = (file: File, location: { lat: number; lng: number }) => {
+        setPendingFile(file);
+        setPendingLocation(location);
+        setModalMode("create");
+        setEditingSpot(null);
+        setIsModalOpen(true);
+    };
+
+    const handleSpotEdit = (spot: Spot) => {
+        if (user?.uid !== spot.createdBy.uid) {
+            // Optional: prevent editing others' spots? For now, allow or warn.
+            // alert("他人の投稿は編集できません"); return;
+        }
+        setEditingSpot(spot);
+        setModalMode("edit");
+        setPendingFile(null); // No initial file for edit
+        setIsModalOpen(true);
+    };
+
+    const handleSpotDelete = async (spot: Spot) => {
+        if (!confirm("本当に削除しますか？")) return;
+        try {
+            await deleteDoc(doc(db, "spots", spot.id));
+        } catch (e) {
+            console.error(e);
+            alert("削除に失敗しました");
+        }
+    };
+
+    const handleSpotSubmit = async (data: {
+        category: any;
+        tags: string[];
+        memo: string;
+        name: string;
+        filesToUpload: File[];
+        existingPhotoUrls: string[];
+    }) => {
+        if (!user) return;
+
+        try {
+            // Process new files
+            const newPhotoUrls: string[] = [];
+            for (const file of data.filesToUpload) {
+                const compressed = await compressImage(file);
+                const base64 = await blobToBase64(compressed);
+                newPhotoUrls.push(base64);
+            }
+
+            // Combine with existing
+            const finalPhotoUrls = [...data.existingPhotoUrls, ...newPhotoUrls];
+
+            // Generate Thumbnail from the first available photo (new or existing)
+            let thumbnailUrl = "";
+            if (finalPhotoUrls.length > 0) {
+                // finalPhotoUrls[0] is a Base64 string
+                try {
+                    thumbnailUrl = await createThumbnail(finalPhotoUrls[0]);
+                } catch (e) {
+                    console.error("Thumbnail generation failed", e);
+                }
+            }
+
+            const batch = writeBatch(db);
+            const spotsRef = collection(db, "spots");
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            let docRef: any;
+
+            if (modalMode === "create") {
+                docRef = doc(spotsRef); // Auto ID
+            } else if (modalMode === "edit" && editingSpot) {
+                docRef = doc(spotsRef, editingSpot.id);
+            }
+
+            if (!docRef) return;
+
+            // 1. Light Data (spots collection)
+            const spotData: any = {
+                category: data.category,
+                tags: data.tags,
+                name: data.name,
+                thumbnailUrl: thumbnailUrl, // New lightweight field
+                // Reduced usage of heavy fields in main doc
+                // We keep 'memo' in main doc? Or move to content? 
+                // Let's keep a truncated memo or just move it. 
+                // Creating a migration plan: 
+                // New system: 'spots' doc has NO photoUrls (or empty).
+                // 'spots_contents' has photoUrls.
+                updatedAt: serverTimestamp(),
+            };
+
+            if (modalMode === "create") {
+                spotData.location = pendingLocation;
+                spotData.createdAt = serverTimestamp();
+                spotData.createdBy = {
+                    uid: user.uid,
+                    displayName: user.displayName || "Unknown"
+                };
+            }
+
+            batch.set(docRef, spotData, { merge: true });
+
+            // 2. Heavy Data (spots_contents collection)
+            const contentRef = doc(db, "spots_contents", docRef.id);
+            const contentData = {
+                memo: data.memo,
+                photoUrls: finalPhotoUrls,
+                updatedAt: serverTimestamp()
+            };
+            batch.set(contentRef, contentData, { merge: true });
+
+            await batch.commit();
+
+            setIsModalOpen(false);
+            setPendingFile(null);
+            setEditingSpot(null);
+
+        } catch (e) {
+            console.error(e);
+            alert("保存エラーが発生しました");
+        }
+    };
+
     const getPositions = (geometry: any) => {
         if (!geometry || geometry.type !== "Polygon" || !geometry.coordinates || !Array.isArray(geometry.coordinates[0])) {
             console.warn("Invalid geometry data:", geometry);
@@ -215,6 +358,7 @@ export default function PostingMap() {
             <LeafletDrawControl onCreated={handleCreated} />
 
             <MapControls />
+            <SpotUploadControl onCapture={handleSpotCapture} />
             <UserLocation />
             <AutoCenter />
 
@@ -236,6 +380,24 @@ export default function PostingMap() {
                     </Popup>
                 </Polygon>
             ))}
+
+            {spots.map(spot => (
+                <SpotMarker
+                    key={spot.id}
+                    spot={spot}
+                    onEdit={handleSpotEdit}
+                    onDelete={handleSpotDelete}
+                />
+            ))}
+
+            <SpotFormModal
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                initialFile={pendingFile}
+                initialLocation={pendingLocation}
+                initialData={editingSpot}
+                onSubmit={handleSpotSubmit}
+            />
         </MapContainer>
     );
 }

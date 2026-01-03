@@ -23,3 +23,15 @@ export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider();
 
 export const db = getFirestore(app);
+
+// Initialize Cloud Storage and get a reference to the service
+import { getStorage, FirebaseStorage } from "firebase/storage";
+
+let storage: FirebaseStorage | null = null;
+try {
+    storage = getStorage(app);
+} catch (e) {
+    console.warn("Firebase Storage initialization failed (likely missing storageBucket in .env.local). Photo upload will not work.", e);
+}
+
+export { storage };

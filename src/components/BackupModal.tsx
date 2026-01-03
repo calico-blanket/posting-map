@@ -7,17 +7,40 @@ import { getPostingAreasCollection } from "@/lib/firestore";
 import { db } from "@/lib/firebase";
 import { PostingArea } from "@/lib/types";
 
+import { useAuth } from "@/components/AuthProvider";
+
 interface BackupModalProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
 export default function BackupModal({ isOpen, onClose }: BackupModalProps) {
+    const { isAdmin } = useAuth();
     const [isExporting, setIsExporting] = useState(false);
     const [isImporting, setIsImporting] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     if (!isOpen) return null;
+
+    if (!isAdmin) {
+        return (
+            <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/50 p-4">
+                <div className="bg-white rounded-lg shadow-xl w-full max-w-sm overflow-hidden p-6 text-center">
+                    <AlertTriangle className="mx-auto text-yellow-500 mb-4" size={48} />
+                    <h2 className="text-lg font-bold text-gray-800 mb-2">アクセス制限</h2>
+                    <p className="text-gray-600 mb-6 text-sm">
+                        バックアップ・復元機能は管理者のみ利用可能です。
+                    </p>
+                    <button
+                        onClick={onClose}
+                        className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold py-2 px-6 rounded-full"
+                    >
+                        閉じる
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     const handleBackup = async () => {
         try {
