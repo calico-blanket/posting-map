@@ -349,46 +349,48 @@ export default function PostingMap() {
     };
 
     return (
-        <MapContainer center={INITIAL_CENTER} zoom={INITIAL_ZOOM} style={{ height: "100%", width: "100%" }}>
-            <TileLayer
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-
-            <LeafletDrawControl onCreated={handleCreated} />
-
-            <MapControls />
-            <SpotUploadControl onCapture={handleSpotCapture} />
-            <UserLocation />
-            <AutoCenter />
-
-            {areas.map(area => (
-                <Polygon
-                    key={area.id}
-                    positions={getPositions(area.geometry)}
-                    pathOptions={{
-                        color: STATUS_COLORS[area.status] || "blue",
-                        fillOpacity: 0.4
-                    }}
-                >
-                    <Popup>
-                        <AreaEditForm
-                            area={area}
-                            onSave={handleSaveArea}
-                            onDelete={handleDeleteArea}
-                        />
-                    </Popup>
-                </Polygon>
-            ))}
-
-            {spots.map(spot => (
-                <SpotMarker
-                    key={spot.id}
-                    spot={spot}
-                    onEdit={handleSpotEdit}
-                    onDelete={handleSpotDelete}
+        <>
+            <MapContainer center={INITIAL_CENTER} zoom={INITIAL_ZOOM} style={{ height: "100%", width: "100%" }}>
+                <TileLayer
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-            ))}
+
+                <LeafletDrawControl onCreated={handleCreated} />
+
+                <MapControls />
+                <SpotUploadControl onCapture={handleSpotCapture} />
+                <UserLocation />
+                <AutoCenter />
+
+                {areas.map(area => (
+                    <Polygon
+                        key={area.id}
+                        positions={getPositions(area.geometry)}
+                        pathOptions={{
+                            color: STATUS_COLORS[area.status] || "blue",
+                            fillOpacity: 0.4
+                        }}
+                    >
+                        <Popup>
+                            <AreaEditForm
+                                area={area}
+                                onSave={handleSaveArea}
+                                onDelete={handleDeleteArea}
+                            />
+                        </Popup>
+                    </Polygon>
+                ))}
+
+                {spots.map(spot => (
+                    <SpotMarker
+                        key={spot.id}
+                        spot={spot}
+                        onEdit={handleSpotEdit}
+                        onDelete={handleSpotDelete}
+                    />
+                ))}
+            </MapContainer>
 
             <SpotFormModal
                 isOpen={isModalOpen}
@@ -398,6 +400,6 @@ export default function PostingMap() {
                 initialData={editingSpot}
                 onSubmit={handleSpotSubmit}
             />
-        </MapContainer>
+        </>
     );
 }
