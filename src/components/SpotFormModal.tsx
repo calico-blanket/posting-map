@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { SpotCategory, SPOT_TAGS, Spot } from "@/types/spot";
 import { X, Check, Plus, Trash2 } from "lucide-react";
-import Image from "next/image";
+
 
 interface SpotFormModalProps {
     isOpen: boolean;
@@ -160,11 +160,11 @@ export default function SpotFormModal({ isOpen, onClose, initialFile, initialDat
                         <div className="grid grid-cols-2 gap-3">
                             {previewPhotos.map((photo, index) => (
                                 <div key={index} className="relative aspect-video rounded-lg overflow-hidden border bg-gray-100 group">
-                                    <Image
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
                                         src={photo.type === "file" ? photo.startUrl : photo.url}
                                         alt={`Preview ${index}`}
-                                        fill
-                                        className="object-cover"
+                                        className="object-cover w-full h-full"
                                     />
                                     <button
                                         onClick={() => handleRemovePhoto(index)}
