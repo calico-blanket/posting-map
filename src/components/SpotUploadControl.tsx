@@ -1,8 +1,8 @@
 import { useState, useRef } from "react";
 import { Camera, Loader2 } from "lucide-react";
 import { useMap } from "react-leaflet";
-import exifr from "exifr";
 import { useAuth } from "@/components/AuthProvider";
+import { getExifData } from "@/lib/exif";
 
 interface SpotUploadControlProps {
     onCapture: (file: File, location: { lat: number; lng: number }) => void;
@@ -20,38 +20,13 @@ export default function SpotUploadControl({ onCapture }: SpotUploadControlProps)
         setIsLoading(true);
 
         try {
-            // 1. Extract Location (EXIF)
-            // Convert DMS (degrees, minutes, seconds) to decimal degrees  
-            const dmsToDecimal = (dms: number[] | number | undefined): number | undefined => {
-                if (!dms) return undefined;
-                if (typeof dms === 'number') return dms;
-                if (Array.isArray(dms) && dms.length === 3) {
-                    const [degrees, minutes, seconds] = dms;
-                    return degrees + minutes / 60 + seconds / 3600;
-                }
-                return undefined;
-            };
+            let location = null;
+            const exifData = await getExifData(file);
+            console.log("EXIF Data result:", exifData);
 
-            const getExifLocation = async (file: File): Promise<{ lat: number; lng: number } | null> => {
-                try {
-                    const output = await exifr.parse(file, ["GPSLatitude", "GPSLongitude"]);
-                    const lat = dmsToDecimal(output?.GPSLatitude);
-                    const lng = dmsToDecimal(output?.GPSLongitude);
-
-                    console.log("EXIF output:", output);
-                    console.log("Parsed lat:", lat, "lng:", lng);
-
-                    if (lat !== undefined && lng !== undefined && !isNaN(lat) && !isNaN(lng)) {
-                        return { lat, lng };
-                    }
-                    return null;
-                } catch (e) {
-                    console.error("Error parsing EXIF", e);
-                    return null;
-                }
-            };
-
-            let location = await getExifLocation(file);
+            if (exifData && typeof exifData.lat === 'number' && typeof exifData.lng === 'number' && !isNaN(exifData.lat) && !isNaN(exifData.lng)) {
+                location = { lat: exifData.lat, lng: exifData.lng };
+            }
 
             if (location) {
                 console.log("Location found in photo:", location);
