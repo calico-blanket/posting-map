@@ -23,14 +23,34 @@ export default function SpotUploadControl({ onCapture }: SpotUploadControlProps)
             // 1. Extract Location (EXIF)
             const getExifLocation = async (file: File): Promise<{ lat: number; lng: number } | null> => {
                 try {
+                    // Try GPS extraction
                     const gps = await exifr.gps(file);
-                    if (gps && typeof gps.latitude === 'number' && typeof gps.longitude === 'number') {
-                        console.log("EXIF GPS found:", gps);
-                        return { lat: gps.latitude, lng: gps.longitude };
+                    console.log("Raw GPS object:", gps);
+                    console.log("GPS type:", typeof gps);
+                    console.log("GPS keys:", gps ? Object.keys(gps) : "null");
+
+                    if (gps) {
+                        console.log("GPS.latitude:", gps.latitude, "type:", typeof gps.latitude);
+                        console.log("GPS.longitude:", gps.longitude, "type:", typeof gps.longitude);
+
+                        if (typeof gps.latitude === 'number' && typeof gps.longitude === 'number' &&
+                            !isNaN(gps.latitude) && !isNaN(gps.longitude)) {
+                            return { lat: gps.latitude, lng: gps.longitude };
+                        }
                     }
+
+                    // Fallback: try parsing full EXIF
+                    console.log("GPS method failed, trying full EXIF parse...");
+                    const exif = await exifr.parse(file, { gps: true });
+                    console.log("Full EXIF:", exif);
+
+                    if (exif && exif.latitude && exif.longitude) {
+                        return { lat: exif.latitude, lng: exif.longitude };
+                    }
+
                     return null;
                 } catch (e) {
-                    console.warn("EXIF parsing error:", e);
+                    console.error("EXIF parsing error:", e);
                     return null;
                 }
             };
