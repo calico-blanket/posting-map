@@ -39,8 +39,10 @@ export default function SpotUploadControl({ onCapture }: SpotUploadControlProps)
 
             if (location) {
                 console.log("Location found in photo:", location);
+                alert(`📍 写真の位置情報を検出: ${location.lat.toFixed(4)}, ${location.lng.toFixed(4)}`);
             } else {
                 console.log("No EXIF location found, falling back to device location.");
+                alert("⚠️ 写真に位置情報がありません。現在地を使用します。");
                 // Fallback: Use Current Device Position or Map Center
                 try {
                     const pos: GeolocationPosition = await new Promise((resolve, reject) => {
