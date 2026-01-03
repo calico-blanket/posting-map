@@ -32,6 +32,7 @@ export default function SpotUploadControl({ onCapture }: SpotUploadControlProps)
 
                         if (latData && latRef && lngData && lngRef) {
                             const convertDMSToDD = (dms: number[], ref: string) => {
+                                if (!Array.isArray(dms) || dms.length < 3) return NaN;
                                 let dd = dms[0] + dms[1] / 60 + dms[2] / 3600;
                                 if (ref === "S" || ref === "W") {
                                     dd = dd * -1;
@@ -41,7 +42,12 @@ export default function SpotUploadControl({ onCapture }: SpotUploadControlProps)
 
                             const lat = convertDMSToDD(latData, latRef);
                             const lng = convertDMSToDD(lngData, lngRef);
-                            resolve({ lat, lng });
+
+                            if (!isNaN(lat) && !isNaN(lng)) {
+                                resolve({ lat, lng });
+                            } else {
+                                resolve(null);
+                            }
                         } else {
                             resolve(null);
                         }

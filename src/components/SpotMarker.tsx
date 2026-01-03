@@ -56,7 +56,7 @@ export default function SpotMarker({ spot, onEdit, onDelete }: SpotMarkerProps) 
     const [details, setDetails] = useState<SpotContent | null>(null);
     const [isLoadingDetails, setIsLoadingDetails] = useState(false);
 
-    if (!spot.location) return null;
+    if (!spot.location || isNaN(spot.location.lat) || isNaN(spot.location.lng)) return null;
 
     const handlePopupOpen = async () => {
         // If details already loaded or legacy data exists, don't fetch
