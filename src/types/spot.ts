@@ -14,14 +14,20 @@ export interface Spot {
     location: { lat: number; lng: number };
     category: SpotCategory;
     tags: string[];
-    memo: string;
-    photoUrls: string[]; // Storage URLs (Array, max 2)
+    memo?: string; // Moved to SpotContent (optional here for legacy/transition)
+    photoUrls?: string[]; // Moved to SpotContent (optional here for legacy/transition)
     // Legacy support (optional, can be removed if we migrate data)
     photoUrl?: string;
-    thumbnailUrl?: string; // Reserved for future use
+    thumbnailUrl?: string; // Small Base64 thumbnail
     createdAt: Timestamp;
     createdBy: {
         uid: string;
         displayName: string;
     };
+}
+
+export interface SpotContent {
+    id: string;
+    memo: string;
+    photoUrls: string[];
 }
