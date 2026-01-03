@@ -21,36 +21,32 @@ export default function SpotUploadControl({ onCapture }: SpotUploadControlProps)
 
         try {
             // 1. Extract Location (EXIF)
+            // Convert DMS (degrees, minutes, seconds) to decimal degrees  
+            const dmsToDecimal = (dms: number[] | number | undefined): number | undefined => {
+                if (!dms) return undefined;
+                if (typeof dms === 'number') return dms;
+                if (Array.isArray(dms) && dms.length === 3) {
+                    const [degrees, minutes, seconds] = dms;
+                    return degrees + minutes / 60 + seconds / 3600;
+                }
+                return undefined;
+            };
+
             const getExifLocation = async (file: File): Promise<{ lat: number; lng: number } | null> => {
                 try {
-                    // Try GPS extraction
-                    const gps = await exifr.gps(file);
-                    console.log("Raw GPS object:", gps);
-                    console.log("GPS type:", typeof gps);
-                    console.log("GPS keys:", gps ? Object.keys(gps) : "null");
+                    const output = await exifr.parse(file, ["GPSLatitude", "GPSLongitude"]);
+                    const lat = dmsToDecimal(output?.GPSLatitude);
+                    const lng = dmsToDecimal(output?.GPSLongitude);
 
-                    if (gps) {
-                        console.log("GPS.latitude:", gps.latitude, "type:", typeof gps.latitude);
-                        console.log("GPS.longitude:", gps.longitude, "type:", typeof gps.longitude);
+                    console.log("EXIF output:", output);
+                    console.log("Parsed lat:", lat, "lng:", lng);
 
-                        if (typeof gps.latitude === 'number' && typeof gps.longitude === 'number' &&
-                            !isNaN(gps.latitude) && !isNaN(gps.longitude)) {
-                            return { lat: gps.latitude, lng: gps.longitude };
-                        }
+                    if (lat !== undefined && lng !== undefined && !isNaN(lat) && !isNaN(lng)) {
+                        return { lat, lng };
                     }
-
-                    // Fallback: try parsing full EXIF
-                    console.log("GPS method failed, trying full EXIF parse...");
-                    const exif = await exifr.parse(file, { gps: true });
-                    console.log("Full EXIF:", exif);
-
-                    if (exif && exif.latitude && exif.longitude) {
-                        return { lat: exif.latitude, lng: exif.longitude };
-                    }
-
                     return null;
                 } catch (e) {
-                    console.error("EXIF parsing error:", e);
+                    console.error("Error parsing EXIF", e);
                     return null;
                 }
             };
