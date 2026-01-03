@@ -81,29 +81,33 @@ export default function PostingPage() {
 
   return (
     <div className="h-screen w-full relative">
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-2">
-        <div className="bg-white/90 px-4 py-2 rounded-full shadow-md backdrop-blur-sm border border-gray-200 flex items-center gap-2">
-          <h1 className="font-bold text-gray-800 text-sm md:text-base">ポスティング管理マップ</h1>
-          {isAdmin && <span className="text-blue-500 font-bold" title="管理者">★</span>}
+      <div className="absolute top-2 left-1/2 -translate-x-1/2 z-[1000] flex items-center gap-1.5 w-[95%] max-w-md justify-center pointer-events-none">
+        <div className="bg-white/95 px-3 py-1.5 rounded-full shadow-sm backdrop-blur-md border border-gray-200 flex items-center gap-2 pointer-events-auto">
+          <h1 className="font-bold text-gray-800 text-[10px] xs:text-xs md:text-sm whitespace-nowrap">ポスティング管理マップ</h1>
+          {isAdmin && <span className="text-blue-500 font-bold text-xs" title="管理者">★</span>}
+
+          <div className="w-px h-4 bg-gray-200 mx-1"></div>
+
+          <div className="flex items-center gap-1">
+            {isAdmin && (
+              <button
+                onClick={() => setIsAdminSettingsOpen(true)}
+                className="p-1.5 rounded-full hover:bg-gray-100 text-blue-600"
+                title="管理者設定"
+              >
+                <Shield size={16} />
+              </button>
+            )}
+
+            <button
+              onClick={() => setIsBackupModalOpen(true)}
+              className="p-1.5 rounded-full hover:bg-gray-100 text-gray-600"
+              title="設定・バックアップ"
+            >
+              <Settings size={16} />
+            </button>
+          </div>
         </div>
-
-        {isAdmin && (
-          <button
-            onClick={() => setIsAdminSettingsOpen(true)}
-            className="bg-white/90 p-2 rounded-full shadow-md backdrop-blur-sm border border-gray-200 hover:bg-gray-100 transition-colors text-blue-600"
-            title="管理者設定"
-          >
-            <Shield size={20} />
-          </button>
-        )}
-
-        <button
-          onClick={() => setIsBackupModalOpen(true)}
-          className="bg-white/90 p-2 rounded-full shadow-md backdrop-blur-sm border border-gray-200 hover:bg-gray-100 transition-colors text-gray-700"
-          title="設定・バックアップ"
-        >
-          <Settings size={20} />
-        </button>
       </div>
       <PostingMap />
       <BackupModal
