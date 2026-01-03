@@ -66,3 +66,9 @@
 ## ライセンス
 このプロジェクトは [MIT License](./LICENSE) のもとで公開されています。
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
+## 作者
+猫柄毛布（calico-blanket）
+
+## 使用AI
+Antigravitiy
