@@ -45,7 +45,7 @@ export default function SpotFormModal({ isOpen, onClose, initialFile, initialDat
                 // Edit Mode
                 setCategory(initialData.category);
                 setTags(initialData.tags);
-                setMemo(initialData.memo);
+                setMemo(initialData.memo || "");
                 setName(initialData.name || "");
 
                 const existing: PhotoItem[] = [];
