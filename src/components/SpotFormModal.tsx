@@ -142,7 +142,7 @@ export default function SpotFormModal({ isOpen, onClose, initialFile, initialDat
     );
 
     return (
-        <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm touch-none">
+        <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
             <div className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden max-h-[85dvh] flex flex-col" onClick={(e) => e.stopPropagation()}>
                 <div className="p-4 border-b flex items-center justify-between bg-gray-50">
                     <h2 className="font-bold text-lg text-gray-800">
@@ -153,7 +153,7 @@ export default function SpotFormModal({ isOpen, onClose, initialFile, initialDat
                     </button>
                 </div>
 
-                <div className="overflow-y-auto p-4 flex-1 overscroll-contain touch-pan-y">
+                <div className="overflow-y-auto p-4 flex-1 overscroll-contain bg-white [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-gray-300 [&::-webkit-scrollbar-thumb]:rounded-full">
                     {/* Photo Preview & Add */}
                     <div className="mb-6">
                         <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">写真 (最大2枚)</label>
