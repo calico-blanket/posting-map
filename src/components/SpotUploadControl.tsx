@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { Camera, Loader2 } from "lucide-react";
 import { useMap } from "react-leaflet";
-import exifr from "exif-js";
+import exifr from "exifr";
 import { useAuth } from "@/components/AuthProvider";
 
 interface SpotUploadControlProps {
