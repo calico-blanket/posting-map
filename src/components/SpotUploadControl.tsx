@@ -66,10 +66,10 @@ export default function SpotUploadControl({ onCapture }: SpotUploadControlProps)
     };
 
     return (
-        <div className="leaflet-bottom leaflet-right flex flex-col items-end gap-2" style={{ bottom: "20px", right: "10px", pointerEvents: "auto", zIndex: 1000 }}>
+        <div className="leaflet-bottom leaflet-right flex flex-col items-end gap-2" style={{ bottom: "80px", right: "20px", pointerEvents: "auto", zIndex: 1000 }}>
             <button
                 onClick={handleClick}
-                className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
+                className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-lg flex items-center justify-center transition-transform hover:scale-105 active:scale-95"
                 title="写真を投稿"
                 disabled={isLoading}
             >
