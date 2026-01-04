@@ -144,7 +144,14 @@ export default function SetupPage() {
                                         </ul>
                                     </li>
                                     <li>「プロジェクトを作成」を押し、処理完了後に「続行」を押します。</li>
-                                    <li>プロジェクトのダッシュボードで、<strong>「+ アプリを追加」</strong>をクリックし、<strong>ウェブ</strong>（<code>&lt;/&gt;</code> アイコン）を選択します。</li>
+                                    <li>
+                                        プロジェクトのダッシュボードで、<strong>「+ アプリを追加」</strong>をクリックし、<strong>ウェブ</strong>（<code>&lt;/&gt;</code> アイコン）を選択します。
+                                        <ul className="list-disc list-inside ml-6 mt-1 text-sm text-gray-500">
+                                            <li>アプリのニックネーム: プロジェクト名と同じで構いません（例: <code>posting-map</code>）。</li>
+                                            <li>Firebase Hosting: <strong>チェックは外したまま</strong>で大丈夫です（Vercelを利用するため）。</li>
+                                            <li>「アプリを登録」ボタンをクリックしてください。</li>
+                                        </ul>
+                                    </li>
                                     <li>アプリの登録が完了すると、<code>firebaseConfig</code> というコードが表示されます。これをコピーしてください。</li>
                                 </ol>
                                 <div className="flex justify-between">
