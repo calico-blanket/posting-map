@@ -168,6 +168,11 @@ export default function SpotMarker({ spot, onEdit, onDelete }: SpotMarkerProps) 
                         </p>
                     )}
 
+                    {/* Coordinates Display */}
+                    <div className="text-[10px] text-gray-400 font-mono mb-2">
+                        {spot.location.lat.toFixed(6)}, {spot.location.lng.toFixed(6)}
+                    </div>
+
                     <div className="flex items-center justify-between text-xs text-gray-400 mt-2">
                         <span>by {spot.createdBy?.displayName}</span>
                         <div className="flex gap-2">
