@@ -46,6 +46,11 @@ export default function BackupModal({ isOpen, onClose }: BackupModalProps) {
         try {
             setIsExporting(true);
 
+            if (!db) {
+                alert("データベース未接続");
+                return;
+            }
+
             const snapshot = await getDocs(getPostingAreasCollection());
             const areas = snapshot.docs.map(doc => doc.data());
 
@@ -80,6 +85,12 @@ export default function BackupModal({ isOpen, onClose }: BackupModalProps) {
             return;
         }
 
+        const firestore = db;
+        if (!firestore) {
+            alert("データベース接続エラー");
+            return;
+        }
+
         try {
             setIsImporting(true);
             const text = await file.text();
@@ -100,7 +111,7 @@ export default function BackupModal({ isOpen, onClose }: BackupModalProps) {
             // 1. Delete all existing documents
             const snapshot = await getDocs(getPostingAreasCollection());
             const deleteBatches = [];
-            let currentDeleteBatch = writeBatch(db);
+            let currentDeleteBatch = writeBatch(firestore);
             let deleteCount = 0;
 
             snapshot.docs.forEach((doc) => {
@@ -108,7 +119,7 @@ export default function BackupModal({ isOpen, onClose }: BackupModalProps) {
                 deleteCount++;
                 if (deleteCount % 400 === 0) {
                     deleteBatches.push(currentDeleteBatch.commit());
-                    currentDeleteBatch = writeBatch(db);
+                    currentDeleteBatch = writeBatch(firestore);
                 }
             });
             if (deleteCount % 400 !== 0) deleteBatches.push(currentDeleteBatch.commit());
@@ -117,7 +128,7 @@ export default function BackupModal({ isOpen, onClose }: BackupModalProps) {
 
             // 2. Insert new documents
             const insertBatches = [];
-            let currentInsertBatch = writeBatch(db);
+            let currentInsertBatch = writeBatch(firestore);
             let insertCount = 0;
             const collectionRef = getPostingAreasCollection();
 
@@ -128,7 +139,7 @@ export default function BackupModal({ isOpen, onClose }: BackupModalProps) {
                 insertCount++;
                 if (insertCount % 400 === 0) {
                     insertBatches.push(currentInsertBatch.commit());
-                    currentInsertBatch = writeBatch(db);
+                    currentInsertBatch = writeBatch(firestore);
                 }
             });
             if (insertCount % 400 !== 0) insertBatches.push(currentInsertBatch.commit());

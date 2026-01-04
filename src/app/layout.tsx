@@ -32,6 +32,8 @@ export const viewport: Viewport = {
 
 import { AuthProvider } from "@/components/AuthProvider";
 
+import SetupGuard from "@/components/SetupGuard";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -42,9 +44,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <SetupGuard>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </SetupGuard>
       </body>
     </html>
   );

@@ -19,6 +19,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
+        if (!auth) {
+            console.warn("Auth not configured");
+            setLoading(false);
+            return;
+        }
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
                 const allowedEmails = (process.env.NEXT_PUBLIC_ALLOWED_EMAILS || "")

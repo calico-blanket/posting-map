@@ -134,6 +134,9 @@ export default function PostingMap() {
     const [editingSpot, setEditingSpot] = useState<Spot | null>(null);
 
     useEffect(() => {
+        const firestore = db;
+        if (!firestore) return;
+
         // Areas listener
         const unsubscribeAreas = onSnapshot(getPostingAreasCollection(), (snapshot) => {
             const data = snapshot.docs.map(d => d.data());
@@ -143,7 +146,7 @@ export default function PostingMap() {
         });
 
         // Spots listener
-        const unsubscribeSpots = onSnapshot(collection(db, "spots"), (snapshot) => {
+        const unsubscribeSpots = onSnapshot(collection(firestore, "spots"), (snapshot) => {
             const data = snapshot.docs.map(d => ({ id: d.id, ...d.data() } as Spot));
             setSpots(data);
         });
@@ -187,8 +190,14 @@ export default function PostingMap() {
             alert("ログインしていません");
             return;
         }
+        const firestore = db;
+        if (!firestore) {
+            console.error("DB not initialized");
+            return;
+        }
+
         try {
-            const ref = doc(db, "posting_areas", id);
+            const ref = doc(firestore, "posting_areas", id);
             await updateDoc(ref, {
                 ...updates,
                 updatedAt: serverTimestamp(),
@@ -209,8 +218,10 @@ export default function PostingMap() {
             console.error("Delete failed: User not logged in");
             return;
         }
+        const firestore = db;
+        if (!firestore) return;
         try {
-            await deleteDoc(doc(db, "posting_areas", id));
+            await deleteDoc(doc(firestore, "posting_areas", id));
         } catch (error) {
             console.error("Error in handleDeleteArea:", error);
             throw error;
@@ -239,8 +250,10 @@ export default function PostingMap() {
 
     const handleSpotDelete = async (spot: Spot) => {
         if (!confirm("本当に削除しますか？")) return;
+        const firestore = db;
+        if (!firestore) return;
         try {
-            await deleteDoc(doc(db, "spots", spot.id));
+            await deleteDoc(doc(firestore, "spots", spot.id));
         } catch (e) {
             console.error(e);
             alert("削除に失敗しました");
@@ -256,6 +269,8 @@ export default function PostingMap() {
         existingPhotoUrls: string[];
     }) => {
         if (!user) return;
+        const firestore = db;
+        if (!firestore) return;
 
         try {
             // Process new files
@@ -280,8 +295,8 @@ export default function PostingMap() {
                 }
             }
 
-            const batch = writeBatch(db);
-            const spotsRef = collection(db, "spots");
+            const batch = writeBatch(firestore);
+            const spotsRef = collection(firestore, "spots");
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             let docRef: any;
 
@@ -320,7 +335,7 @@ export default function PostingMap() {
             batch.set(docRef, spotData, { merge: true });
 
             // 2. Heavy Data (spots_contents collection)
-            const contentRef = doc(db, "spots_contents", docRef.id);
+            const contentRef = doc(firestore, "spots_contents", docRef.id);
             const contentData = {
                 memo: data.memo,
                 photoUrls: finalPhotoUrls,

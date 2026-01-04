@@ -43,30 +43,24 @@
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcalico-blanket%2Fposting-map)
 
-1. **Fork & Clone**
-   - GitHub画面右上の「Fork」ボタンを押し、自分のアカウントにコピーします。
-   - `git clone` でローカルにダウンロードします。
+### 前提条件
+このアプリを自分で設置（デプロイ）するには、以下のサービスのアカウントが必要です（いずれも無料プランで利用可能です）。
+- **GitHubアカウント**: ソースコードを管理するために必要です。
+- **Vercelアカウント**: アプリをインターネット上に公開（ホスティング）するために必要です。
 
-2. **Firebase プロジェクトの作成**
-   - [Firebase Console](https://console.firebase.google.com/) で新規プロジェクトを作成します。
-   - **Authentication**: 「Google」ログインを有効にします。
-   - **Firestore Database**: データベースを作成します。
+1. **Deployボタンをクリック**
+   - 上記の「Deploy with Vercel」ボタンを押すと、自動的にGithubリポジトリの作成（クローン）とVercelへのデプロイ準備が始まります。
+   - 画面の指示に従ってGitHubアカウントとの連携などを許可してください。
 
-3. **環境変数の設定**
-   - プロジェクト直下に `.env.local` ファイルを作成し、以下のFirebase設定値を記述します。
-     ```env
-     NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
-     NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
-     NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-     NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-     NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
-     # ログイン制限を行う場合のみ設定 (カンマ区切り)
-     # NEXT_PUBLIC_ALLOWED_EMAILS=user1@example.com,user2@example.com
-     ```
+3. **デプロイの完了**
+   - 環境変数の設定画面が表示されますが、**ここでは何も入力せずに** Deploy を続行してください。
+   - デプロイが完了したら、生成されたURL（Dashboardボタンなどから移動）をクリックしてアプリを開きます。
 
-4. **Vercelへのデプロイ**
-   - Vercelで「Add New Project」から、Forkしたリポジトリを選択。
-   - `Environment Variables` に、上記と同じFirebaseの環境変数を設定してデプロイします。
+4. **セットアップウィザードの実行**
+   - アプリを開くと自動的に「初期セットアップ」画面が表示されます。
+   - 画面の案内に従ってFirebaseプロジェクトを作成し、設定を入力してください。
+
+> **Note**: 本格運用する際は、ウィザードの最後に案内される手順に従って、Vercelの管理画面（Settings > Environment Variables）に環境変数を正式に登録することを推奨します。
 
 ## ライセンス
 このプロジェクトは [MIT License](./LICENSE) のもとで公開されています。
