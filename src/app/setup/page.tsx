@@ -152,7 +152,12 @@ export default function SetupPage() {
                                             <li>「アプリを登録」ボタンをクリックしてください。</li>
                                         </ul>
                                     </li>
-                                    <li>アプリの登録が完了すると、<code>firebaseConfig</code> というコードが表示されます。これをコピーしてください。</li>
+                                    <li>
+                                        <code>const firebaseConfig = ...</code> から始まるコードが表示されます。
+                                        <br />
+                                        コード枠内の<strong>右下にあるコピーボタン</strong>（四角が重なったアイコン）を押して、コード全体をコピーしてください。
+                                    </li>
+                                    <li>コピーしたら、Firebaseコンソール画面で「コンソールに進む」をクリックします。</li>
                                 </ol>
                                 <div className="flex justify-between">
                                     <button onClick={handlePrev} className="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
