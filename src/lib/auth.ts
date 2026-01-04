@@ -5,6 +5,9 @@ import { auth, provider } from "./firebase";
 const ALLOWED_EMAILS = (process.env.NEXT_PUBLIC_ALLOWED_EMAILS || "").split(",").map(e => e.trim()).filter(e => e);
 
 export const signIn = async (): Promise<User> => {
+    if (!auth || !provider) {
+        throw new Error("Firebase Auth not configured");
+    }
     try {
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
@@ -22,6 +25,9 @@ export const signIn = async (): Promise<User> => {
 };
 
 export const signInGuest = async (): Promise<User> => {
+    if (!auth) {
+        throw new Error("Firebase Auth not configured");
+    }
     try {
         const result = await signInAnonymously(auth);
         return result.user;
@@ -31,4 +37,7 @@ export const signInGuest = async (): Promise<User> => {
     }
 };
 
-export const signOut = () => firebaseSignOut(auth);
+export const signOut = () => {
+    if (!auth) return Promise.resolve();
+    return firebaseSignOut(auth);
+};
