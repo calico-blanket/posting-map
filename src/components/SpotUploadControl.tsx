@@ -37,6 +37,11 @@ export default function SpotUploadControl({ onCapture }: SpotUploadControlProps)
                 addLog(`Loc ok: ${location.lat.toFixed(5)}, ${location.lng.toFixed(5)}`);
             } else {
                 addLog(`Loc invalid/missing`);
+                // @ts-ignore
+                if (exifData?.raw) {
+                    // @ts-ignore
+                    alert(`EXIF Parse Failed. Raw: ${JSON.stringify(exifData.raw, null, 2)}`);
+                }
             }
 
             if (location) {
