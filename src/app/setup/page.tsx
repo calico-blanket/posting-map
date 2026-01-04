@@ -132,11 +132,19 @@ export default function SetupPage() {
                                         <a href="https://console.firebase.google.com/" target="_blank" rel="noopener noreferrer" className="text-teal-600 hover:underline inline-flex items-center">
                                             Firebase Console <ExternalLink className="ml-1 h-3 w-3" />
                                         </a>
-                                        を開きます。
+                                        を開き、Googleアカウントでログインします。
                                     </li>
-                                    <li>「プロジェクトを追加」をクリックし、適当な名前（例: <code>posting-map</code>）を入力して作成します。</li>
-                                    <li>Google Analyticsは無効で構いません。</li>
-                                    <li>プロジェクトが作成されたら、<strong>「ウェブアプリ」</strong>（<code>&lt;/&gt;</code> アイコン）を追加します。</li>
+                                    <li>画面中央の<strong>「Firebaseプロジェクトを設定して開始」</strong>をクリックします（または「プロジェクトを追加」）。</li>
+                                    <li>
+                                        適当な名前（例: <code>posting-map</code>）を入力し、「続行」で進みます。
+                                        <ul className="list-disc list-inside ml-6 mt-1 text-sm text-gray-500">
+                                            <li>Googleデベロッパープログラムへの参加は「無効」で構いません。</li>
+                                            <li>Geminiは「無効」で構いません。</li>
+                                            <li>Googleアナリティクスは「無効」で構いません。</li>
+                                        </ul>
+                                    </li>
+                                    <li>「プロジェクトを作成」を押し、処理完了後に「続行」を押します。</li>
+                                    <li>プロジェクトのダッシュボードが開いたら、<strong>「ウェブアプリ」</strong>（<code>&lt;/&gt;</code> アイコン）を追加します。</li>
                                     <li>アプリの登録が完了すると、<code>firebaseConfig</code> というコードが表示されます。これをコピーしてください。</li>
                                 </ol>
                                 <div className="flex justify-between">
