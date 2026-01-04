@@ -144,7 +144,7 @@ export default function SetupPage() {
                                         </ul>
                                     </li>
                                     <li>「プロジェクトを作成」を押し、処理完了後に「続行」を押します。</li>
-                                    <li>プロジェクトのダッシュボードが開いたら、<strong>「ウェブアプリ」</strong>（<code>&lt;/&gt;</code> アイコン）を追加します。</li>
+                                    <li>プロジェクトのダッシュボードで、<strong>「+ アプリを追加」</strong>をクリックし、<strong>ウェブ</strong>（<code>&lt;/&gt;</code> アイコン）を選択します。</li>
                                     <li>アプリの登録が完了すると、<code>firebaseConfig</code> というコードが表示されます。これをコピーしてください。</li>
                                 </ol>
                                 <div className="flex justify-between">
