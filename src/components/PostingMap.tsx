@@ -94,7 +94,7 @@ function MapControls() {
     };
 
     return (
-        <div className="leaflet-bottom leaflet-left" style={{ bottom: "20px", left: "10px", pointerEvents: "auto", zIndex: 1000 }}>
+        <div className="leaflet-bottom leaflet-left" style={{ bottom: "80px", left: "10px", pointerEvents: "auto", zIndex: 1000 }}>
             <button
                 onClick={handleGoToLocation}
                 className="bg-white p-2 rounded shadow-md border hover:bg-gray-100 flex items-center gap-2 text-sm font-bold text-gray-700"
