@@ -46,12 +46,13 @@ export default function BackupModal({ isOpen, onClose }: BackupModalProps) {
         try {
             setIsExporting(true);
 
-            if (!db) {
+            const firestore = db;
+            if (!firestore) {
                 alert("データベース未接続");
                 return;
             }
 
-            const snapshot = await getDocs(getPostingAreasCollection());
+            const snapshot = await getDocs(getPostingAreasCollection(firestore));
             const areas = snapshot.docs.map(doc => doc.data());
 
             const dataStr = JSON.stringify(areas, null, 2);
@@ -109,7 +110,7 @@ export default function BackupModal({ isOpen, onClose }: BackupModalProps) {
             }));
 
             // 1. Delete all existing documents
-            const snapshot = await getDocs(getPostingAreasCollection());
+            const snapshot = await getDocs(getPostingAreasCollection(firestore));
             const deleteBatches = [];
             let currentDeleteBatch = writeBatch(firestore);
             let deleteCount = 0;
@@ -130,7 +131,7 @@ export default function BackupModal({ isOpen, onClose }: BackupModalProps) {
             const insertBatches = [];
             let currentInsertBatch = writeBatch(firestore);
             let insertCount = 0;
-            const collectionRef = getPostingAreasCollection();
+            const collectionRef = getPostingAreasCollection(firestore);
 
             areas.forEach((area) => {
                 // Use existing ID if present, otherwise auto-generate (though backup should have ID)

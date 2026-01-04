@@ -1,6 +1,6 @@
 import { db } from "./firebase";
 import { PostingArea } from "./types";
-import { collection, FirestoreDataConverter, QueryDocumentSnapshot, SnapshotOptions } from "firebase/firestore";
+import { collection, Firestore, FirestoreDataConverter, QueryDocumentSnapshot, SnapshotOptions } from "firebase/firestore";
 
 export const postingAreaConverter: FirestoreDataConverter<PostingArea> = {
     toFirestore(area: PostingArea) {
@@ -24,5 +24,5 @@ export const postingAreaConverter: FirestoreDataConverter<PostingArea> = {
     }
 };
 
-export const getPostingAreasCollection = () =>
-    collection(db, "posting_areas").withConverter(postingAreaConverter);
+export const getPostingAreasCollection = (firestore: Firestore) =>
+    collection(firestore, "posting_areas").withConverter(postingAreaConverter);

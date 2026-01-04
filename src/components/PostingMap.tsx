@@ -138,7 +138,7 @@ export default function PostingMap() {
         if (!firestore) return;
 
         // Areas listener
-        const unsubscribeAreas = onSnapshot(getPostingAreasCollection(), (snapshot) => {
+        const unsubscribeAreas = onSnapshot(getPostingAreasCollection(firestore), (snapshot) => {
             const data = snapshot.docs.map(d => d.data());
             setAreas(data);
         }, (error) => {
@@ -165,8 +165,11 @@ export default function PostingMap() {
 
         const geoJson = layer.toGeoJSON();
 
+        const firestore = db;
+        if (!firestore) return;
+
         try {
-            await addDoc(getPostingAreasCollection(), {
+            await addDoc(getPostingAreasCollection(firestore), {
                 // @ts-ignore
                 geometry: geoJson.geometry,
                 status: "planned",
