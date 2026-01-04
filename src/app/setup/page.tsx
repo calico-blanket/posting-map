@@ -179,17 +179,20 @@ export default function SetupPage() {
                                     <div className="border border-gray-200 rounded-md p-4">
                                         <h4 className="font-bold text-gray-800 mb-2">Authentication (認証)</h4>
                                         <ul className="list-disc list-inside text-sm">
-                                            <li>メニューから「Authentication」を選択し、「始める」をクリック。</li>
+                                            <li>左メニューの<strong>「構築」</strong>を開き、「Authentication」を選択します。</li>
+                                            <li>「始める」をクリックします。</li>
                                             <li>「ログイン方法」タブで<strong>「Google」</strong>を選択し、有効にします。</li>
+                                            <li>「保存」を押します。</li>
                                         </ul>
                                     </div>
 
                                     <div className="border border-gray-200 rounded-md p-4">
                                         <h4 className="font-bold text-gray-800 mb-2">Cloud Firestore (データベース)</h4>
                                         <ul className="list-disc list-inside text-sm">
-                                            <li>メニューから「Firestore Database」を選択し、「データベースの作成」をクリック。</li>
+                                            <li>左メニューの<strong>「構築」</strong>から「Firestore Database」を選択します。</li>
+                                            <li>「データベースの作成」をクリックします。</li>
                                             <li>場所（ロケーション）は <code>asia-northeast1</code> (Tokyo) などを推奨します。</li>
-                                            <li>セキュリティルールは「本番環境モード」で開始してください。</li>
+                                            <li>セキュリティルールは<strong>「本番環境モード」</strong>を選択して作成してください。</li>
                                         </ul>
                                     </div>
                                 </div>
