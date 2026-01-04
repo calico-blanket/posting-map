@@ -85,3 +85,8 @@
 - **ドキュメント:**
     - README.md に「Deploy to Vercel」ボタンを追加し、導入手順を大幅に簡略化。
     - 動作検証用の手順書 walkthrough.md を作成。
+    - **ドキュメント改善:**
+        - ユーザーフィードバックに基づき、セットアップ画面（/setup）の説明文を大幅に加筆修正（Firebaseプロジェクト作成手順、アプリ登録の詳細など）。
+    - **デプロイエラー修正:**
+        - `AdminSettingsModal`、`SpotMarker`、`BackupModal`、`auth.ts` などにおいて、Firebase未設定時（db/authがnull）の型チェック漏れによるビルドエラーを修正。
+        - `firestore.ts` をリファクタリングし、DBインスタンスの明示的な受け渡しを強制することで安全性を向上。
