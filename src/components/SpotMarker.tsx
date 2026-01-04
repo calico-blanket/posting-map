@@ -64,8 +64,12 @@ export default function SpotMarker({ spot, onEdit, onDelete }: SpotMarkerProps) 
         if (spot.photoUrls && spot.photoUrls.length > 0) return;
 
         setIsLoadingDetails(true);
+        setIsLoadingDetails(true);
         try {
-            const snap = await getDoc(doc(db, "spots_contents", spot.id));
+            const firestore = db;
+            if (!firestore) return;
+
+            const snap = await getDoc(doc(firestore, "spots_contents", spot.id));
             if (snap.exists()) {
                 setDetails(snap.data() as SpotContent);
             } else {

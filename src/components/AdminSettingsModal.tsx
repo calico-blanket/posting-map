@@ -25,8 +25,11 @@ export default function AdminSettingsModal({ isOpen, onClose }: AdminSettingsMod
     useEffect(() => {
         if (!isOpen) return;
 
+        const firestore = db;
+        if (!firestore) return;
+
         // Listen to system/settings
-        const unsub = onSnapshot(doc(db, "system", "settings"), (docSnap) => {
+        const unsub = onSnapshot(doc(firestore, "system", "settings"), (docSnap) => {
             if (docSnap.exists()) {
                 const data = docSnap.data();
                 setFirestoreAdmins(data.adminEmails || []);
@@ -48,9 +51,15 @@ export default function AdminSettingsModal({ isOpen, onClose }: AdminSettingsMod
             return;
         }
 
+        const firestore = db;
+        if (!firestore) {
+            alert("DB未接続");
+            return;
+        }
+
         setIsLoading(true);
         try {
-            const ref = doc(db, "system", "settings");
+            const ref = doc(firestore, "system", "settings");
             const snap = await getDoc(ref);
 
             if (snap.exists()) {
@@ -74,9 +83,15 @@ export default function AdminSettingsModal({ isOpen, onClose }: AdminSettingsMod
     const handleRemove = async (email: string) => {
         if (!confirm(`${email} を管理者から削除しますか？`)) return;
 
+        const firestore = db;
+        if (!firestore) {
+            alert("DB未接続");
+            return;
+        }
+
         setIsLoading(true);
         try {
-            const ref = doc(db, "system", "settings");
+            const ref = doc(firestore, "system", "settings");
             await updateDoc(ref, {
                 adminEmails: arrayRemove(email)
             });
