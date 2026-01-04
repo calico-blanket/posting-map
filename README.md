@@ -41,6 +41,8 @@
 ## 開発者向けガイド (自分専用の環境を作る方法)
 このアプリをフォークして、ご自身の環境（Firebase + Vercel）で動かすための手順です。
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fcalico-blanket%2Fposting-map)
+
 1. **Fork & Clone**
    - GitHub画面右上の「Fork」ボタンを押し、自分のアカウントにコピーします。
    - `git clone` でローカルにダウンロードします。
