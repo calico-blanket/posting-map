@@ -14,7 +14,7 @@ export default function SpotUploadControl({ onCapture }: SpotUploadControlProps)
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [debugLog, setDebugLog] = useState<string[]>([]);
-    const addLog = (msg: string) => setDebugLog(prev => [...prev, msg].slice(-5));
+    const addLog = (msg: string) => setDebugLog(prev => [...prev, msg].slice(-20));
 
     const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files?.length) return;
@@ -25,7 +25,11 @@ export default function SpotUploadControl({ onCapture }: SpotUploadControlProps)
         try {
             let location = null;
             const exifData = await getExifData(file);
-            addLog(`EXIF raw: ${JSON.stringify(exifData)}`);
+            // @ts-ignore
+            const keysMsg = `Keys: ${exifData?.debugKeys || 'none'}`;
+            addLog(keysMsg);
+            alert(keysMsg); // Force visible
+            addLog(`EXIF raw: ${JSON.stringify({ ...exifData, debugKeys: undefined })}`);
             console.log("EXIF Data result:", exifData);
 
             if (exifData && typeof exifData.lat === 'number' && typeof exifData.lng === 'number' && !isNaN(exifData.lat) && !isNaN(exifData.lng)) {

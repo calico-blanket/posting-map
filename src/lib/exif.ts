@@ -13,14 +13,27 @@ function dmsToDecimal(dms: number[] | number | undefined): number | undefined {
 
 export async function getExifData(file: File) {
     try {
-        const output = await exifr.parse(file, ["GPSLatitude", "GPSLongitude", "DateTimeOriginal"]);
-        const lat = dmsToDecimal(output?.GPSLatitude);
-        const lng = dmsToDecimal(output?.GPSLongitude);
+        // Parse ALL tags with explicit flags
+        const output = await exifr.parse(file, {
+            tiff: true,
+            ifd0: true,
+            gps: true,
+            exif: true,
+        });
+
+        // Debug: Log all keys found
+        const debugKeys = output ? Object.keys(output) : ["null"];
+        console.log("EXIF Keys:", debugKeys);
+
+        // Try standard GPS tags
+        const lat = dmsToDecimal(output?.GPSLatitude || output?.latitude);
+        const lng = dmsToDecimal(output?.GPSLongitude || output?.longitude);
 
         return {
             lat,
             lng,
             date: output?.DateTimeOriginal,
+            debugKeys: debugKeys.join(", ") // Return keys for UI display
         };
     } catch (e) {
         console.error("Error parsing EXIF", e);
