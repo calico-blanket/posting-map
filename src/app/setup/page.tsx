@@ -179,8 +179,7 @@ export default function SetupPage() {
                                     <div className="border border-gray-200 rounded-md p-4">
                                         <h4 className="font-bold text-gray-800 mb-2">Authentication (認証)</h4>
                                         <ul className="list-disc list-inside text-sm">
-                                            <li>左メニューの<strong>「構築」</strong>を開き、「Authentication」を選択します。</li>
-                                            <li>「始める」をクリックします。</li>
+                                            <li>左側のメニューから<strong>構築＞Authentication</strong>を選択し、「始める」をクリック。</li>
                                             <li>「ログイン方法」タブで<strong>「Google」</strong>を選択し、有効にします。</li>
                                             <li>「保存」を押します。</li>
                                         </ul>
