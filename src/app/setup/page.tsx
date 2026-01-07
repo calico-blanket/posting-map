@@ -67,12 +67,29 @@ export default function SetupPage() {
             // Save to LocalStorage
             localStorage.setItem("firebase_config", JSON.stringify(config));
 
-            // Reload to apply
-            window.location.href = "/";
+            // Proceed to Step 5 (Final Env Var Guide)
+            setStep(5);
 
         } catch (e) {
             setError("保存に失敗しました。");
         }
+    };
+
+    const generateEnvVars = () => {
+        const config = parseConfig(configInput);
+        if (!config) return "";
+
+        return `NEXT_PUBLIC_FIREBASE_API_KEY=${config.apiKey}
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=${config.authDomain}
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=${config.projectId}
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=${config.storageBucket}
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${config.messagingSenderId}
+NEXT_PUBLIC_FIREBASE_APP_ID=${config.appId}
+# NEXT_PUBLIC_ADMIN_EMAILS=root@example.com`;
+    };
+
+    const handleFinish = () => {
+        window.location.href = "/";
     };
 
     return (
@@ -91,7 +108,7 @@ export default function SetupPage() {
                     <div className="bg-gray-100 h-2 w-full">
                         <div
                             className="bg-teal-500 h-2 transition-all duration-300"
-                            style={{ width: `${(step / 4) * 100}%` }}
+                            style={{ width: `${(step / 5) * 100}%` }}
                         ></div>
                     </div>
 
@@ -245,6 +262,59 @@ export default function SetupPage() {
                                 </div>
                             </div>
                         )}
+
+                        {step === 5 && (
+                            <div className="space-y-6">
+                                <h3 className="text-xl font-bold text-gray-800">5. 本番運用の準備 (Vercel)</h3>
+                                <div className="bg-green-50 border-l-4 border-green-400 p-4">
+                                    <div className="flex">
+                                        <div className="flex-shrink-0">
+                                            <Check className="h-5 w-5 text-green-400" />
+                                        </div>
+                                        <div className="ml-3">
+                                            <p className="text-sm text-green-700">
+                                                設定がブラウザに保存され、アプリを利用できる状態になりました！
+                                                <br />
+                                                このまま始めることもできますが、Vercelに以下の環境変数を設定することを強く推奨します。
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="block text-sm font-medium text-gray-700">
+                                        Vercel Environment Variables (.env.local)
+                                    </label>
+                                    <div className="relative">
+                                        <textarea
+                                            readOnly
+                                            className="w-full h-48 p-3 border border-gray-300 rounded-md font-mono text-xs bg-gray-50 focus:ring-teal-500 focus:border-teal-500"
+                                            value={generateEnvVars()}
+                                        ></textarea>
+                                        <button
+                                            onClick={() => navigator.clipboard.writeText(generateEnvVars())}
+                                            className="absolute top-2 right-2 p-2 bg-white border border-gray-300 rounded shadow-sm hover:bg-gray-50 text-gray-500"
+                                            title="Copy to clipboard"
+                                        >
+                                            <Copy size={16} />
+                                        </button>
+                                    </div>
+                                    <p className="text-xs text-gray-500">
+                                        Vercelダッシュボードの <strong>Settings &gt; Environment Variables</strong> にこれらの変数を追加してください。
+                                    </p>
+                                </div>
+
+                                <div className="flex justify-end">
+                                    <button
+                                        onClick={handleFinish}
+                                        className="inline-flex items-center justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+                                    >
+                                        <Play className="mr-2 h-5 w-5" />
+                                        アプリを開始する
+                                    </button>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -254,6 +324,6 @@ export default function SetupPage() {
                     </Link>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

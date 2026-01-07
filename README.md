@@ -78,7 +78,18 @@
    - アプリを開くと自動的に「初期セットアップ」画面が表示されます。
    - 画面の案内に従ってFirebaseプロジェクトを作成し、設定を入力してください。
 
-> **Note**: 本格運用する際は、ウィザードの最後に案内される手順に従って、Vercelの管理画面（Settings > Environment Variables）に環境変数を正式に登録することを推奨します。
+5. **環境変数の設定（推奨）**
+   - 本格運用する際は、Vercelの管理画面（Settings > Environment Variables）または `.env.local` に以下の変数を設定してください。
+
+   ```bash
+   NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+   NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+   NEXT_PUBLIC_ADMIN_EMAILS=admin@example.com,another@example.com
+   ```
 
 ## ライセンス
 このプロジェクトは [MIT License](./LICENSE) のもとで公開されています。
