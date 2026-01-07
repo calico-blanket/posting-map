@@ -66,7 +66,7 @@ export default function SpotUploadControl({ onCapture }: SpotUploadControlProps)
     };
 
     return (
-        <div className="leaflet-bottom leaflet-right flex flex-col items-end gap-2" style={{ bottom: "80px", right: "20px", pointerEvents: "auto", zIndex: 1000 }}>
+        <div className="leaflet-bottom leaflet-right flex flex-col items-end gap-2" style={{ bottom: "40px", right: "20px", pointerEvents: "auto", zIndex: 1000 }}>
             <button
                 onClick={handleClick}
                 className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-lg flex items-center justify-center transition-transform hover:scale-105 active:scale-95"

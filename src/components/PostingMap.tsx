@@ -94,7 +94,7 @@ function MapControls() {
     };
 
     return (
-        <div className="leaflet-bottom leaflet-left" style={{ bottom: "80px", left: "10px", pointerEvents: "auto", zIndex: 1000 }}>
+        <div className="leaflet-bottom leaflet-left" style={{ bottom: "40px", left: "10px", pointerEvents: "auto", zIndex: 1000 }}>
             <button
                 onClick={handleGoToLocation}
                 className="bg-white p-2 rounded shadow-md border hover:bg-gray-100 flex items-center gap-2 text-sm font-bold text-gray-700"
@@ -128,7 +128,7 @@ function LayerToggleControl({ showSpots, setShowSpots, showAreas, setShowAreas }
     setShowAreas: (v: boolean) => void;
 }) {
     return (
-        <div className="leaflet-bottom leaflet-left" style={{ bottom: "130px", left: "10px", pointerEvents: "auto", zIndex: 1000 }}>
+        <div className="leaflet-bottom leaflet-left" style={{ bottom: "90px", left: "10px", pointerEvents: "auto", zIndex: 1000 }}>
             <div className="bg-white p-2 rounded shadow-md border flex flex-col gap-1 select-none">
                 <label className="flex items-center gap-2 text-xs font-bold text-gray-700 cursor-pointer hover:bg-gray-50 p-1 rounded">
                     <input
