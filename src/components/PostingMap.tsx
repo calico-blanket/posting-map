@@ -121,10 +121,44 @@ function AutoCenter() {
     return null;
 }
 
+function LayerToggleControl({ showSpots, setShowSpots, showAreas, setShowAreas }: {
+    showSpots: boolean;
+    setShowSpots: (v: boolean) => void;
+    showAreas: boolean;
+    setShowAreas: (v: boolean) => void;
+}) {
+    return (
+        <div className="leaflet-top leaflet-right" style={{ top: "10px", right: "10px", pointerEvents: "auto", zIndex: 1000 }}>
+            <div className="bg-white p-2 rounded shadow-md border flex flex-col gap-1 select-none">
+                <label className="flex items-center gap-2 text-xs font-bold text-gray-700 cursor-pointer hover:bg-gray-50 p-1 rounded">
+                    <input
+                        type="checkbox"
+                        checked={showAreas}
+                        onChange={(e) => setShowAreas(e.target.checked)}
+                        className="rounded text-teal-600 focus:ring-teal-500"
+                    />
+                    Marking
+                </label>
+                <label className="flex items-center gap-2 text-xs font-bold text-gray-700 cursor-pointer hover:bg-gray-50 p-1 rounded">
+                    <input
+                        type="checkbox"
+                        checked={showSpots}
+                        onChange={(e) => setShowSpots(e.target.checked)}
+                        className="rounded text-teal-600 focus:ring-teal-500"
+                    />
+                    Spots
+                </label>
+            </div>
+        </div>
+    );
+}
+
 export default function PostingMap() {
     const { user } = useAuth();
     const [spots, setSpots] = useState<Spot[]>([]);
     const [areas, setAreas] = useState<PostingArea[]>([]);
+    const [showSpots, setShowSpots] = useState(true);
+    const [showAreas, setShowAreas] = useState(true);
 
     // Modal State
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -379,9 +413,15 @@ export default function PostingMap() {
                 <MapControls />
                 <SpotUploadControl onCapture={handleSpotCapture} />
                 <UserLocation />
-                <AutoCenter />
 
-                {areas.map(area => (
+                <LayerToggleControl
+                    showSpots={showSpots}
+                    setShowSpots={setShowSpots}
+                    showAreas={showAreas}
+                    setShowAreas={setShowAreas}
+                />
+
+                {showAreas && areas.map(area => (
                     <Polygon
                         key={area.id}
                         positions={getPositions(area.geometry)}
@@ -400,7 +440,7 @@ export default function PostingMap() {
                     </Polygon>
                 ))}
 
-                {spots.map(spot => (
+                {showSpots && spots.map(spot => (
                     <SpotMarker
                         key={spot.id}
                         spot={spot}

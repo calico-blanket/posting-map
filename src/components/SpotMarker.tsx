@@ -33,8 +33,8 @@ const createCustomIcon = (category: SpotCategory) => {
         html: `
             <div style="
                 background-color: ${color};
-                width: 30px;
-                height: 30px;
+                width: 20px;
+                height: 20px;
                 border-radius: 50% 50% 50% 0;
                 transform: rotate(-45deg);
                 display: flex;
@@ -43,12 +43,12 @@ const createCustomIcon = (category: SpotCategory) => {
                 border: 2px solid white;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.3);
             ">
-                <div style="transform: rotate(45deg); font-size: 14px;">${emoji}</div>
+                <div style="transform: rotate(45deg); font-size: 10px;">${emoji}</div>
             </div>
         `,
-        iconSize: [30, 30],
-        iconAnchor: [15, 30],
-        popupAnchor: [0, -30]
+        iconSize: [20, 20],
+        iconAnchor: [10, 20],
+        popupAnchor: [0, -20]
     });
 };
 
