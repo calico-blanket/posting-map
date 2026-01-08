@@ -8,6 +8,8 @@ export const postingAreaConverter: FirestoreDataConverter<PostingArea> = {
         return {
             geometry: JSON.stringify(area.geometry),
             status: area.status,
+            plannedCount: area.plannedCount ?? null,
+            actualCount: area.actualCount ?? null,
             memo: area.memo,
             createdAt: area.createdAt,
             updatedAt: area.updatedAt,

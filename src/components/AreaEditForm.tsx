@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useMap } from "react-leaflet";
 import { PostingArea, PostingStatus } from "@/lib/types";
 
 interface AreaEditFormProps {
@@ -9,7 +10,10 @@ interface AreaEditFormProps {
 }
 
 export default function AreaEditForm({ area, onSave, onDelete }: AreaEditFormProps) {
+    const map = useMap();
     const [status, setStatus] = useState<PostingStatus>(area.status);
+    const [plannedCount, setPlannedCount] = useState<string>(area.plannedCount?.toString() || "");
+    const [actualCount, setActualCount] = useState<string>(area.actualCount?.toString() || "");
     const [memo, setMemo] = useState(area.memo);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -26,8 +30,11 @@ export default function AreaEditForm({ area, onSave, onDelete }: AreaEditFormPro
         try {
             await onSave(area.id, {
                 status,
+                plannedCount: plannedCount ? parseInt(plannedCount) : null,
+                actualCount: actualCount ? parseInt(actualCount) : null,
                 memo
             });
+            map.closePopup();
         } catch (error) {
             console.error("Failed to save", error);
             alert("保存に失敗しました");
@@ -95,8 +102,33 @@ export default function AreaEditForm({ area, onSave, onDelete }: AreaEditFormPro
                 </div>
             </div>
 
+            <div className="flex gap-2 mb-3">
+                <div className="flex-1">
+                    <label className="block text-xs font-bold text-gray-700 mb-1">予定枚数</label>
+                    <input
+                        type="number"
+                        value={plannedCount}
+                        onChange={(e) => setPlannedCount(e.target.value)}
+                        onClick={(e) => e.stopPropagation()}
+                        className="w-full text-sm border border-gray-300 rounded p-1.5 focus:ring-1 focus:ring-teal-500 outline-none"
+                        placeholder="0"
+                    />
+                </div>
+                <div className="flex-1">
+                    <label className="block text-xs font-bold text-gray-700 mb-1">完了枚数</label>
+                    <input
+                        type="number"
+                        value={actualCount}
+                        onChange={(e) => setActualCount(e.target.value)}
+                        onClick={(e) => e.stopPropagation()}
+                        className="w-full text-sm border border-gray-300 rounded p-1.5 focus:ring-1 focus:ring-teal-500 outline-none"
+                        placeholder="0"
+                    />
+                </div>
+            </div>
+
             <div className="mb-3">
-                <label className="block text-xs font-bold text-gray-700 mb-1">メモ</label>
+                <label className="block text-xs font-bold text-gray-700 mb-1">備考</label>
                 <textarea
                     value={memo}
                     onChange={(e) => setMemo(e.target.value)}

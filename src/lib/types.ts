@@ -9,6 +9,8 @@ export interface PostingArea {
         coordinates: number[][][]; // [ [lng, lat], [lng, lat], ... ]
     };
     status: PostingStatus;
+    plannedCount?: number | null;
+    actualCount?: number | null;
     memo: string;
     createdAt: Timestamp;
     updatedAt: Timestamp;
